@@ -1,0 +1,191 @@
+openapi: 3.0.0
+info:
+    version: 0.1.0
+    title: truckvault
+      
+paths:
+    /alive:
+        get:
+            responses:
+                "200":                   
+                    description: "asd data from station in time period"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Alive"
+                "500":
+                    description: "Default error sample response"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+
+    /vehicles/{company}:
+        get:
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: company
+                  schema:
+                    type: string
+                  required: true
+            responses:
+                "200":
+                    description: "asd data from station in time period"
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Vehicle"
+                '400':
+                    $ref: '#/components/responses/BadResquestError'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                "500":
+                    description: "Default error sample response"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+
+    /vehicle/{company}/{vehicleID}:
+        get:
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: company
+                  schema:
+                    type: string
+                  required: true
+                - in: path
+                  name: vehicleID
+                  schema:
+                    type: string
+                  required: true
+            description: "asd data from station in time period"
+            responses:
+                "200":
+                    description: "asd data from station in time period"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Vehicle"
+                '400':
+                    $ref: '#/components/responses/BadResquestError'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                "500":
+                    description: "Default error sample response"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+
+    /user:
+        get:
+            security:
+                - bearerAuth: []
+            description: "asd data from station in time period"
+            responses:
+                "200":
+                    description: "asd data from station in time period"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/User"
+                '400':
+                    $ref: '#/components/responses/BadResquestError'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                "500":
+                    description: "Default error sample response"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+
+components:
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+    responses:
+        UnauthorizedError:
+            description: Access token is missing or invalid
+        BadResquestError:
+            description: Some of the parameters are bad 
+    schemas:
+        Error:
+            type: object
+            required:
+                - code
+                - message
+            properties:
+                code:
+                    type: integer
+                message:
+                    type: string
+        Alive:
+            type: object
+            required:
+                - status
+                - timestamp
+            properties:
+                status:
+                    type: string
+                timestamp:
+                    type: string
+                    format: date-time
+        User:
+            type: object
+            required:
+                - email
+                - permission
+            properties:
+                email:
+                    type: string
+                permission:
+                    type: string
+        Vehicle:
+            type: object
+            required:
+                - id
+                - type
+                - model
+                - licensePlate
+                - maxPayload
+                - millage
+                - color
+                - year
+                - tariffs
+                - insurance
+                - maintainingCost
+            properties:
+                id:
+                    type: string
+                type:
+                    type: string
+                model:
+                    type: string
+                licensePlate:
+                    type: string
+                maxPayload:
+                    type: number
+                    format: double  
+                millage:
+                    type: number
+                    format: double
+                color:
+                    type: string
+                year:
+                    type: integer
+                tariffs:
+                    type: string
+                insurance:
+                    type: string
+                maintainingCost:
+                    type: integer
