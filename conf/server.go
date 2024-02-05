@@ -2,11 +2,12 @@ package conf
 
 import (
 	"fmt"
-	"truckconf"
+
+	"github.com/amermelao/simpleconf"
 )
 
 type Server struct {
-	truckconf.EnableConf
+	simpleconf.EnableConf
 
 	Port         int      `mapstructure:"port"`
 	AllowOrigins []string `mapstructure:"allow-origins"`

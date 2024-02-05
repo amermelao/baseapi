@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 	"testing"
-	"truckconf"
 
+	"github.com/amermelao/simpleconf"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 )
@@ -23,8 +23,8 @@ allow-origins = ["www.me.com", "localhost:3000"]
 	viper.ReadConfig(bytes.NewBuffer(yamlExample))
 
 	var conf Server
-	truckconf.ReadConfiguration(
-		truckconf.OneSubset(&conf),
+	simpleconf.ReadConfiguration(
+		simpleconf.OneSubset(&conf),
 	)
 
 	assert.Equal(t, 8081, conf.Port)

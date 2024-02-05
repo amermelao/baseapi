@@ -3,23 +3,20 @@ package conf
 import (
 	"encoding/json"
 	"log/slog"
-	"truckconf"
+
+	"github.com/amermelao/simpleconf"
 )
 
 type AppConf struct {
-	Server   Server
-	ValidJWT ValidJWT
-	DB       DB
+	Server Server
 }
 
 func NewAppConfiguratoin() AppConf {
 
 	var conf AppConf
 
-	if err := truckconf.ReadConfiguration(
-		truckconf.OneSubset(&conf.DB),
-		truckconf.OneSubset(&conf.Server),
-		truckconf.OneSubset(&conf.ValidJWT),
+	if err := simpleconf.ReadConfiguration(
+		simpleconf.OneSubset(&conf.Server),
 	); err != nil {
 		slog.Error("read conf", slog.String("error", err.Error()))
 	}
