@@ -1,0 +1,20 @@
+
+FROM golang:1.21-alpine as build-stage
+
+WORKDIR /app
+
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . ./
+RUN CGO_ENABLED=0 go build -o /webApi
+
+
+FROM alpine
+
+WORKDIR /
+
+COPY --from=build-stage /webApi /webApi
+COPY --from=build-stage /app/config.toml /config.toml
+
+CMD [ "/webApi" ]

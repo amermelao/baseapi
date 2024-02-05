@@ -22,7 +22,7 @@ tasks:
             - go test -timeout 30s -v ./...
     docker-image:
         cmds:
-            - docker build -f develop/Dockerfile.yaml -t cognito-sidecar:latest .
+            - docker build --tag baseapi:latest -f ./build/package/Dockerfile.multistage  .
     docker-run:
         deps: [docker-image]
         cmds:
@@ -30,14 +30,6 @@ tasks:
     set-up:
         cmds:
             - go install github.com/cosmtrek/air@latest
-    make-ddbb-image:
-        cmds:
-            - docker build --no-cache --tag postgress-dev:latest develop/ddbb/
-    db-up:
-        deps: [make-ddbb-image]
-        cmds:
-            - docker stop ddbb-dev || true && docker rm ddbb-dev || true
-            - docker run -d -p 5432:5432 --name ddbb-dev postgress-dev
     air:
         cmds:
             - $(go env GOPATH)/bin/air --build.cmd "task build && sleep 3" --build.bin "./truckvault -conf develop/config.toml"
